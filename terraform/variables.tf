@@ -1,23 +1,25 @@
-# AWS region to deploy resources
+# AWS region to deploy your infrastructure
 variable "aws_region" {
-  default = "eu-west-2"
+  description = "The AWS region to deploy resources"
+  default     = "eu-west-2"
 }
 
-# AMI for Ubuntu 24.04 (used for controller)
+# Ubuntu 24.04 AMI for Ansible controller
 variable "ami_ubuntu_24" {
-  description = "AMI for Ubuntu 24.04"
-  default     = "ami-044415bb13eee2391" # eu-west-2
+  description = "Ubuntu 24.04 AMI ID for the Ansible Controller"
+  default     = "ami-044415bb13eee2391"
 }
 
-# AMI for Ubuntu 22.04 (used for web and db servers)
+# Ubuntu 22.04 AMI for web server and DB server
 variable "ami_ubuntu_22" {
-  description = "AMI for Ubuntu 22.04"
-  default     = "ami-051fd0ca694aa2379" # eu-west-2
+  description = "Ubuntu 22.04 AMI ID for Web and DB servers"
+  default     = "ami-051fd0ca694aa2379"
 }
 
-# EC2 instance type
+# Instance type (EC2 size)
 variable "instance_type" {
-  default = "t2.micro"
+  description = "EC2 instance type"
+  default     = "t2.micro"
 }
 
 # Path to your public SSH key
