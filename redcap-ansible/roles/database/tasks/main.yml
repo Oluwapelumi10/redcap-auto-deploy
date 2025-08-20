@@ -1,0 +1,110 @@
+---
+# REDCap DB setup (clean, idempotent, production-style)
+
+- name: Install PyMySQL on the DB server
+  apt:
+    name: python3-pymysql
+    state: present
+  become: true
+
+- name: Install MariaDB Server and Client
+  apt:
+    name:
+      - mariadb-server
+      - mariadb-client
+    state: present
+  become: true
+
+- name: Start MariaDB
+  service:
+    name: mariadb
+    state: started
+    enabled: true
+  become: true
+
+# ✅ CHECK if root password was already set
+- name: Check if root password marker exists
+  stat:
+    path: /etc/mysql/.root_password_set
+  register: root_pw_flag
+
+- name: Set MySQL root password (first time only)
+  community.mysql.mysql_user:
+    name: root
+    host: localhost
+    password: StrongRootPass123!
+    login_unix_socket: /run/mysqld/mysqld.sock
+    check_implicit_admin: true
+    state: present
+  become: true
+  when: not root_pw_flag.stat.exists
+
+- name: Create marker file to show root password was set
+  file:
+    path: /etc/mysql/.root_password_set
+    state: touch
+  become: true
+  when: not root_pw_flag.stat.exists
+
+# ✅ CHECK if redcap database already exists
+- name: Check if redcap database exists
+  community.mysql.mysql_info:
+    login_user: root
+    login_password: StrongRootPass123!
+    login_unix_socket: /run/mysqld/mysqld.sock
+  register: db_info
+
+- name: Create redcap database (if not exists)
+  community.mysql.mysql_db:
+    name: redcap
+    state: present
+    login_user: root
+    login_password: StrongRootPass123!
+    login_unix_socket: /run/mysqld/mysqld.sock
+  when: "'redcap' not in db_info.databases"
+  become: true
+
+# ✅ CHECK if redcap_user exists
+- name: Check if redcap_user exists
+  community.mysql.mysql_info:
+    login_user: root
+    login_password: StrongRootPass123!
+    login_unix_socket: /run/mysqld/mysqld.sock
+    filter: users
+  register: mysql_users
+
+- name: Create redcap_user (if not exists)
+  community.mysql.mysql_user:
+    name: redcap_user
+    password: RedcapSecurePass456!
+    host: '172.31.42.51'
+    priv: 'redcap.*:SELECT,INSERT,UPDATE,DELETE'
+    state: present
+    login_user: root
+    login_password: StrongRootPass123!
+    login_unix_socket: /run/mysqld/mysqld.sock
+  when: "'redcap_user@172.31.42.51' not in mysql_users.users"
+  become: true
+
+# ✅ SOP DB tuning (safe to repeat every run)
+- name: Set innodb_buffer_pool_size
+  lineinfile:
+    path: /etc/mysql/mariadb.conf.d/50-server.cnf
+    regexp: '^innodb_buffer_pool_size'
+    line: 'innodb_buffer_pool_size = 256M'
+    insertafter: EOF
+  become: true
+
+- name: Set innodb_log_file_size
+  lineinfile:
+    path: /etc/mysql/mariadb.conf.d/50-server.cnf
+    regexp: '^innodb_log_file_size'
+    line: 'innodb_log_file_size = 64M'
+    insertafter: EOF
+  become: true
+
+- name: Restart MariaDB to apply SOP changes
+  service:
+    name: mariadb
+    state: restarted
+  become: true

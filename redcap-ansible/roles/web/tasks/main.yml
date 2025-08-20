@@ -1,0 +1,153 @@
+---
+- name: Install required packages for REDCap web server
+  apt:
+    name:
+      - apache2
+      - php
+      - libapache2-mod-php
+      - php-mysql
+      - unzip
+      - mariadb-client
+      - php-curl
+      - php-gd
+      - php-zip
+      - php-dom
+      - php-xml
+      - postfix
+      - telnet
+      - php-mbstring
+    state: present
+    update_cache: yes
+
+- name: Deploy Apache virtual host configuration
+  template:
+    src: 000-default.conf.j2
+    dest: /etc/apache2/sites-enabled/000-default.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Apache
+
+- name: Copy REDCap zip to web server
+  copy:
+    src: redcap10.0.26.zip
+    dest: /tmp/redcap10.0.26.zip
+    mode: '0644'
+
+- name: Unzip REDCap into /var/www/html
+  unarchive:
+    src: /tmp/redcap10.0.26.zip
+    dest: /var/www/html/
+    remote_src: yes
+
+- name: Ensure Apache can read the redcap directory
+  file:
+    path: /var/www/html/redcap
+    state: directory
+    owner: www-data
+    group: www-data
+    recurse: yes
+
+- name: Deploy REDCap database.php file
+  template:
+    src: database.php.j2
+    dest: /var/www/html/redcap/database.php
+    owner: www-data
+    group: www-data
+    mode: '0644'
+
+- name: Deploy check_db.php test script
+  template:
+    src: check_db.php.j2
+    dest: /var/www/html/redcap/check_db.php
+    owner: www-data
+    group: www-data
+    mode: '0644'
+
+- name: Tune PHP settings for REDCap
+  replace:
+    path: /etc/php/8.1/apache2/php.ini
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+    backup: yes
+  with_items:
+    - { regexp: '^upload_max_filesize =.*', replace: 'upload_max_filesize = 64M' }
+    - { regexp: '^post_max_size =.*', replace: 'post_max_size = 64M' }
+    - { regexp: '^max_execution_time =.*', replace: 'max_execution_time = 300' }
+    - { regexp: '^max_input_time =.*', replace: 'max_input_time = 600' }
+    - { regexp: '^memory_limit =.*', replace: 'memory_limit = 512M' }
+    - { regexp: '^display_errors =.*', replace: 'display_errors = Off' }
+  notify: Restart Apache
+
+- name: Set ownership of REDCap directory
+  file:
+    path: /var/www/html/redcap
+    owner: www-data
+    group: www-data
+    recurse: yes
+
+- name: Set directory permissions to 755
+  find:
+    paths: /var/www/html/redcap
+    file_type: directory
+  register: redcap_dirs
+
+- name: Apply 755 to directories
+  file:
+    path: "{{ item.path }}"
+    mode: "0755"
+  loop: "{{ redcap_dirs.files }}"
+
+- name: Set file permissions to 644
+  find:
+    paths: /var/www/html/redcap
+    file_type: file
+  register: redcap_files
+
+- name: Apply 644 to files
+  file:
+    path: "{{ item.path }}"
+    mode: "0644"
+  loop: "{{ redcap_files.files }}"
+
+- name: Install Postfix (for REDCap cron emails)
+  apt:
+    name: postfix
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
+- name: Deploy REDCap cron job
+  cron:
+    name: "Run REDCap cron.sh every minute"
+    user: www-data
+    job: "/var/www/html/redcap/cron.sh > /dev/null 2>&1"
+    minute: "*"
+
+- name: Create REDCap dummy cron.sh script
+  copy:
+    dest: /var/www/html/redcap/cron.sh
+    content: |
+      #!/bin/bash
+      echo "$(date -u) ✅ Simulated REDCap cron job ran successfully" >> /var/www/html/redcap/redcap_cron_test.log
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: Ensure REDCap cron job is present
+  cron:
+    name: "REDCap dummy cron job"
+    user: www-data
+    job: "/var/www/html/redcap/cron.sh"
+    minute: "*"
+
+- name: Deploy REDCap test mail script
+  template:
+    src: test_mail.sh.j2
+    dest: /var/www/html/redcap/test_mail.sh
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: Run REDCap test mail script
+  command: bash /var/www/html/redcap/test_mail.sh

@@ -1,0 +1,19 @@
+---
+- name: Configure web server for REDCap
+  hosts: web
+  become: yes
+  roles:
+    - role: web
+      vars:
+        redcap_db_host: "172.31.38.80"
+        redcap_db_name: "redcap"
+        redcap_db_user: "redcap_user"
+        redcap_db_password: "RedcapSecurePass456!"
+        redcap_salt: "mySuperSecretSalt!@#123"
+
+- name: Configure database server for REDCap
+  hosts: db
+  become: yes
+  roles:
+    - database
+

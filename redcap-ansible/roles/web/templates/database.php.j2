@@ -1,0 +1,13 @@
+<?php
+// REDCap database connection settings
+
+$db = array();
+$db['host']     = "{{ redcap_db_host }}";
+$db['name']     = "{{ redcap_db_name }}";
+$db['username'] = "{{ redcap_db_user }}";
+$db['password'] = "{{ redcap_db_password }}";
+$db['port']     = '3306';
+$db['type']     = 'mysql';
+
+$salt = '{{ redcap_salt }}';
+?>

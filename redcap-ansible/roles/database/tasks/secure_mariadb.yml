@@ -1,0 +1,39 @@
+---
+
+# Step 1 - Remove anonymous users
+- name: Remove anonymous MySQL users
+  community.mysql.mysql_user:
+    name: ''
+    host_all: true
+    state: absent
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  become: true
+
+# Step 2 - Disallow remote root login
+- name: Disallow root login remotely
+  community.mysql.mysql_user:
+    name: root
+    host: "{{ item }}"
+    state: absent
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  with_items:
+    - '%'
+    - "{{ ansible_hostname }}"
+    - "{{ ansible_fqdn }}"
+  become: true
+
+# Step 3 - Drop test database
+- name: Remove test database
+  community.mysql.mysql_db:
+    name: test
+    state: absent
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  become: true
+
+# Step 4 - Reload privileges
+- name: Reload privilege tables
+  community.mysql.mysql_query:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    query: FLUSH PRIVILEGES;
+  become: true
+

@@ -1,0 +1,53 @@
+<?php
+$host = "{{ redcap_db_host }}";
+$dbname = "{{ redcap_db_name }}";
+$user = "{{ redcap_db_user }}";
+$pass = "{{ redcap_db_password }}";
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+    echo "
+    <div style='
+        font-family: Arial, sans-serif;
+        background: #f0f9f0;
+        color: #2e7d32;
+        border: 2px solid #c8e6c9;
+        padding: 30px;
+        margin: 40px auto;
+        width: 600px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);'>
+        <h2>✅ Connected successfully to REDCap database!</h2>
+        <p>This is a simulated REDCap demo application. In a real setup, this would initiate the application backend.</p>
+        <a href='/redcap/index.php' style='
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;'>Click here to return to homepage</a>
+    </div>
+    ";
+} catch (PDOException $e) {
+    echo "
+    <div style='
+        font-family: Arial, sans-serif;
+        background: #fff3f3;
+        color: #d32f2f;
+        border: 2px solid #fbcaca;
+        padding: 30px;
+        margin: 40px auto;
+        width: 600px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);'>
+        <h2>❌ Connection failed:</h2>
+        <p>{$e->getMessage()}</p>
+    </div>
+    ";
+}
+?>
+

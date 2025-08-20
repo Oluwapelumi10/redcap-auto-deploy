@@ -1,0 +1,7 @@
+---
+redcap_db_host: "172.31.38.80"
+redcap_db_name: "redcap"
+redcap_db_user: "redcap_user"
+redcap_db_password: "RedcapSecurePass456!"
+redcap_salt: "mySuperSecretSalt!@#123"
+
