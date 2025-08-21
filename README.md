@@ -1,3 +1,4 @@
+🧠 Project Title & Summary
 # 🚀 REDCap Automated Deployment using Terraform & Ansible on AWS EC2
 
 This is a hands-on DevOps lab project where I provisioned a complete 3-tier architecture on AWS using **Terraform** and automated the deployment of **REDCap**, a secure web app for research data collection, using **Ansible**.
