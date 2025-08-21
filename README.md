@@ -2,9 +2,6 @@
 
 This is a hands-on DevOps lab project where I automated the deployment of a REDCap server infrastructure using **Terraform** and **Ansible** on **AWS EC2 instances**. The goal was to replicate a real-world setup used in NHS environments, enabling modular and repeatable infrastructure builds with full automation.
 
-> ✅ Fully automated from provisioning to REDCap configuration.
-> ✅ Based on real infrastructure used in research and clinical environments.
-> ✅ Built for learning and showcasing DevOps automation
 
 ---
 
