@@ -89,6 +89,9 @@ This phase covers the deployment of our infrastructure and configuration of the 
 ✅ Ran Ansible playbook to configure Apache, MariaDB, PHP, and REDCap app
 ✅ Verified the setup with test PHP pages and connection scripts
 ✅ Fully automated REDCap deployment across web and DB servers
+
+---
+
 🔧 Step 1: Deploy Infrastructure with Terraform
 We navigated to the terraform/ directory and ran the following commands:
 cd terraform
@@ -102,6 +105,9 @@ This step provisions:
 1 Web Server (Public Subnet)
 1 Database Server (Private Subnet)
 Internet Gateway, Route Table, Security Groups
+
+---
+
 🔐 Step 2: SSH into the Ansible Controller
 After deployment, we SSH into the Ansible controller to begin configuration:
 ssh -i ~/.ssh/id_rsa ubuntu@<controller_public_ip>
