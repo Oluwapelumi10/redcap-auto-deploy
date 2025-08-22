@@ -112,7 +112,14 @@ terraform validate    # Check .tf syntax for errors
 terraform plan        # Review planned changes
 terraform apply       # Provision AWS infrastructure
 ```
-<img width="575" height="491" alt="Terraform Output" src="https://github.com/user-attachments/assets/ce63124f-4efe-4972-9b66-aaad3083ab5e" />
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/ce63124f-4efe-4972-9b66-aaad3083ab5e" alt="Terraform Output" width="500" />
+      <br><em>Terraform Output</em>
+    </td>
+  </tr>
+</table>
 
 
 
@@ -134,7 +141,14 @@ After deployment, SSH’d into the Ansible controller to start configuring the e
 ```bash
 ssh -i ~/.ssh/id_rsa ubuntu@<controller_public_ip>
 ```
-<img width="665" height="552" alt="ssh contoller" src="https://github.com/user-attachments/assets/256d14b6-8f00-420e-8a5e-8db01d8a8e2d" />
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/256d14b6-8f00-420e-8a5e-8db01d8a8e2d" width="500" />
+      <br><em>Remote access into controller</em>
+    </td>
+  </tr>
+</table>
 
 
 
@@ -161,9 +175,9 @@ I copied the entire `redcap-ansible/` folder (with roles, playbook, templates) t
 ```bash
 scp -i ~/.ssh/id_rsa -r redcap-ansible ubuntu@<controller_ip>:~/
 ```
-<img width="730" height="127" alt="copy-zip-to-controller" src="https://github.com/user-attachments/assets/bf2fca5c-e81a-419a-90d5-75fe5b0e177c" />
-
-
+| ![copy-zip-to-controller.png](https://github.com/user-attachments/assets/bf2fca5c-e81a-419a-90d5-75fe5b0e177c) |
+|:--:|
+| *copy-zip-to-controller.png* |
 
 
 
@@ -213,13 +227,36 @@ Using the `database` role, I automated the installation and configuration of Mar
 - Created `redcap` database and `redcapuser`
 - Granted privileges
 
-| ![MariaDB Installed](https://github.com/user-attachments/assets/475a9bfe-0b57-4a63-b8f4-95dfd4590f28) | ![MariaDB Running](https://github.com/user-attachments/assets/15f9be3b-7828-4ee7-a6ad-5349756744a9) | ![Privileges Granted](https://github.com/user-attachments/assets/7eac8e83-f206-4f32-8880-35080fb340b0) |
-|:--:|:--:|:--:|
-| *MariaDB installed via APT* | *MariaDB service running* | *Privileges granted to redcap_user* |
-
-| ![Security Hardened](https://github.com/user-attachments/assets/e048d71a-73f2-4a19-9306-c8bc74494410) | ![Database Created](https://github.com/user-attachments/assets/7aac643f-da32-40ef-9e0b-61f2bbbf39c3) |  |
-| *Security hardening applied (mysql_secure_installation)* | *`redcap` database created* |  |
-
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/475a9bfe-0b57-4a63-b8f4-95dfd4590f28" width="400" alt="MariaDB Installed" /><br/>
+      <sub>✅ MariaDB installed via APT</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/dcaf1084-56f6-4fb8-aee1-d129d5fcb9a6" width="400" alt="MariaDB service running" /><br/>
+      <sub>🟢 MariaDB service running</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/7eac8e83-f206-4f32-8880-35080fb340b0" width="400" alt="Privileges Granted" /><br/>
+      <sub>🔐 Privileges granted to <code>redcap_user</code></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/e048d71a-73f2-4a19-9306-c8bc74494410" width="400" alt="Security Hardened" /><br/>
+      <sub>🔒 Security hardening via <code>mysql_secure_installation</code></sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/7aac643f-da32-40ef-9e0b-61f2bbbf39c3" width="400" alt="Database Created" /><br/>
+      <sub>📁 <code>redcap</code> database successfully created</sub>
+    </td>
+    <td align="center">
+      <br/><br/>
+      <sub> </sub>
+    </td>
+  </tr>
+</table>
 
 
 
@@ -232,13 +269,28 @@ I copied the `redcap10.0.26.zip` build and unzipped it inside `/var/www/html/red
 - Placed `database.php.j2` to connect to DB
 - Set correct permissions
 
-| ![Redcap ZIP File](https://github.com/user-attachments/assets/e1d16db5-28cb-403a-9934-d7477f805aa0) | ![Upload to Web Server](https://github.com/user-attachments/assets/857c3207-9e90-412e-9963-aa6caedd5ab1) |
-|:--:|:--:|
-| *Redcap ZIP file in Downloads folder* | *Uploading ZIP file to web server via SCP* |
-
-| ![REDCap Homepage](https://github.com/user-attachments/assets/8c30886e-20eb-417f-9f27-33a24f29fc78) | ![Database PHP Check](https://github.com/user-attachments/assets/94711e25-681e-4999-8cbc-d5550cb8d048) |
-| *REDCap application showing in browser* | *Testing DB connection with database.php* |
-
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/e1d16db5-28cb-403a-9934-d7477f805aa0" width="400" alt="Redcap ZIP File" /><br/>
+      <sub>📦 REDCap ZIP file in local Downloads folder</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/857c3207-9e90-412e-9963-aa6caedd5ab1" width="400" alt="Upload to Web Server" /><br/>
+      <sub>⬆️ Uploading ZIP file to web server via <code>scp</code></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/8c30886e-20eb-417f-9f27-33a24f29fc78" width="400" alt="REDCap Homepage" /><br/>
+      <sub>🌐 REDCap application showing in browser</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/94711e25-681e-4999-8cbc-d5550cb8d048" width="400" alt="Database PHP Check" /><br/>
+      <sub>🔧 Testing DB connection with <code>database.php</code></sub>
+    </td>
+  </tr>
+</table>
 
 
 
@@ -252,13 +304,7 @@ I verified the success of the deployment by testing the following:
 - Created and placed `check_db.php` in the web directory to confirm DB connection
 - Checked logs and page response for SQL connectivity confirmation
 
-| ![Login Successful](https://github.com/user-attachments/assets/06dc931c-285d-4d9c-9315-c238f5982778) | ![check_db.php successful](https://github.com/user-attachments/assets/2c39b399-f925-4554-a971-fab50e576248) |
-|:--:|:--:|
-| *Test web login successful (Apache serving REDCap)* | *`check_db.php` shows database connection success* |
-
-| ![check_db.php confirmed](https://github.com/user-attachments/assets/8a905560-b2c4-4857-aaab-eed1c58f716e) | ![index.php](https://github.com/user-attachments/assets/66e0859c-5b71-44d1-a090-ca3281d6a9ff) |
-| *Confirmed DB connection with table listing* | *REDCap homepage (`index.php`) successfully loaded* |
-
+<table> <tr> <td align="center"> <img src="https://github.com/user-attachments/assets/06dc931c-285d-4d9c-9315-c238f5982778" width="400" alt="Login Successful" /><br/> <sub>🔓 Test web login successful (Apache serving REDCap)</sub> </td> <td align="center"> <img src="https://github.com/user-attachments/assets/2c39b399-f925-4554-a971-fab50e576248" width="400" alt="check_db.php successful" /><br/> <sub>✅ <code>check_db.php</code> Deployed successfully</sub> </td> </tr> <tr> <td align="center"> <img src="https://github.com/user-attachments/assets/8a905560-b2c4-4857-aaab-eed1c58f716e" width="400" alt="check_db.php confirmed" /><br/> <sub>📋 Confirmed DB connection with table listing</sub> </td> <td align="center"> <img src="https://github.com/user-attachments/assets/66e0859c-5b71-44d1-a090-ca3281d6a9ff" width="400" alt="index.php" /><br/> <sub>🏠 REDCap homepage (<code>index.php</code>) successfully loaded</sub> </td> </tr> </table>
 
 
 
@@ -272,13 +318,7 @@ To test REDCap's background task automation and email functionality, I:
 - Verified the script ran successfully from CRON
 - Simulated email delivery from the cron task
 
-| ![cron.sh script](https://github.com/user-attachments/assets/85449bf9-884d-426f-96b7-d29e8e5465bd) | ![Postfix installed](https://github.com/user-attachments/assets/4ca3d8bc-d242-4559-9425-db2568b2a6e4) | ![cron job success](https://github.com/user-attachments/assets/c8ee2945-5e67-46d6-bf1c-7da9efda3662) |
-|:--:|:--:|:--:|
-| *Dummy cron.sh script created and deployed* | *Postfix mail server installed via Ansible* | *Cron job executed successfully on schedule* |
-
-| ![email cron deployed](https://github.com/user-attachments/assets/76378e3e-a61a-46d3-a994-d4a4489c7fcf) | ![Postfix outcome](https://github.com/user-attachments/assets/695569c8-a0b6-428c-b17f-d02ab157dbd0) |  |
-| *Log confirms email cron test deployed correctly* | *Postfix handled cron output without errors* |  |
-
+<table> <tr> <td align="center"> <img src="https://github.com/user-attachments/assets/85449bf9-884d-426f-96b7-d29e8e5465bd" width="400" alt="cron-sh-script" /><br/> <sub>✅ Cron job script created and deployed with Ansible</sub> </td> <td align="center"> <img src="https://github.com/user-attachments/assets/4ca3d8bc-d242-4559-9425-db2568b2a6e4" width="400" alt="cronjob-postfix-installed" /><br/> <sub>📦 Postfix installed and configured</sub> </td> <td align="center"> <img src="https://github.com/user-attachments/assets/c8ee2945-5e67-46d6-bf1c-7da9efda3662" width="400" alt="cron-job-ran-successfully" /><br/> <sub>📌 Cron ran successfully — simulated output verified</sub> </td> </tr> <tr> <td align="center"> <img src="https://github.com/user-attachments/assets/76378e3e-a61a-46d3-a994-d4a4489c7fcf" width="400" alt="email-cron-test-deployed" /><br/> <sub>📄 Log confirms cron test deployed successfully</sub> </td> <td align="center"> <img src="https://github.com/user-attachments/assets/695569c8-a0b6-428c-b17f-d02ab157dbd0" width="400" alt="postfix-outcome" /><br/> <sub>📬 Postfix handled simulated mail output without errors</sub> </td> <td></td> </tr> </table>
 
 
 
@@ -345,3 +385,6 @@ These challenges helped reinforce debugging skills and made the automation more 
 - Writing modular Ansible roles and templates  
 - Debugging PHP, permissions, and DB connection issues  
 - Documenting and version-controlling projects with Git and GitHub
+
+
+
