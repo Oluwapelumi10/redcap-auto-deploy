@@ -16,7 +16,7 @@ This project simulates the full automation of REDCap server deployment using Ter
 - Follow best practices for idempotent and secure server setups
 - Structure DevOps projects for clarity, reusability, and scalability
 
-Although this is a simulation (not using the official REDCap licensed files), the steps strictly follow the same procedure that would be used in a real-world production deployment — including configuration structure, automation flow, and system behavior.
+Although this is a simulation (not using the official REDCap licensed files), the steps strictly follow the same procedure that would be used in a real-world production deployment including configuration structure, automation flow, and system behavior.
 
 
 ---
@@ -100,6 +100,31 @@ This section explains how the REDCap infrastructure was deployed and configured 
 ✅ Ansible playbook configured Apache, MariaDB, PHP, and REDCap  
 ✅ All components fully automated no manual setup  
 ✅ Designed to simulate real-world clinical research infra
+
+##  Email Handling with Postfix in Real Environments
+
+In this demo, Postfix was configured to simulate email notifications from the REDCap system using local SMTP delivery.
+
+In a production environment, a full email setup would typically include:
+
+| Component         | Purpose                                          |
+|------------------|--------------------------------------------------|
+| `postfix`         | SMTP server on the application or relay network  |
+| SMTP Auth         | Secured user authentication for outgoing mail    |
+| TLS Encryption    | To secure emails in transit (STARTTLS or SMTPS)  |
+| Email Relay Host  | Forwarding to external SMTP providers (e.g., SES) |
+| Configuration     | `/etc/postfix/main.cf`, `relayhost`, credentials |
+
+Example `main.cf` snippet with relay configuration on Ubuntu:
+
+```text
+relayhost = [smtp.sendgrid.net]:587
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_tls_security_level = encrypt
+smtp_sasl_tls_security_options = noanonymous
+```
+
 
 ### 🛠 Step 1: Deploy Infrastructure with Terraform
 
