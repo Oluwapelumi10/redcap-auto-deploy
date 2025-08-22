@@ -400,16 +400,13 @@ These challenges helped reinforce debugging skills and made the automation more 
 
 
 
-### 🧠 What I Learned from This Project
+🧠 What You Can Learn from This Project
 
-- Provisioning cloud infrastructure using Terraform  
-- Creating production-ready folder structure for DevOps projects  
-- Automating server configuration with Ansible (Apache, MariaDB, REDCap)  
-- Securely connecting to EC2 using SSH  
-- Using CRON and Postfix for scheduled jobs and simulated email  
-- Writing modular Ansible roles and templates  
-- Debugging PHP, permissions, and DB connection issues  
-- Documenting and version-controlling projects with Git and GitHub
-
-
-
+- How to provision secure infrastructure on AWS using Terraform
+- How to design production-style folder structures for DevOps projects
+- Automating multi-server configuration with Ansible (Apache, MariaDB, REDCap)
+- SSH best practices for securely accessing cloud servers
+- Using CRON and Postfix for task scheduling and email simulation
+- Writing modular, reusable Ansible roles and templates
+- Troubleshooting common issues with PHP, permissions, and database access
+- Structuring and documenting real-world DevOps projects using Git and GitHub
